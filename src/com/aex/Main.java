@@ -22,7 +22,7 @@ public class Main {
 		System.out.println("============");
 		System.out.println("");
 		try {
-			adb = args[0];
+			adb = args[0] + "adb";
 			finalPath = args[1];
 		} catch (Exception e) {
 			finishProcessShamelessly(
