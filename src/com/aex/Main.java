@@ -14,10 +14,7 @@ public class Main {
 	public static void main(String[] args) throws IOException, InterruptedException {
 		String finalPath = "";
 		String adb = "";
-		Process p = Runtime.getRuntime().exec("figlet " + name);
-		p.waitFor();
-		System.out.println(readProcessOutput(p));
-		System.out.println("");
+		printBanner();
 		System.out.println("By M4v3r1cX");
 		System.out.println("============");
 		System.out.println("");
@@ -114,18 +111,6 @@ public class Main {
 		System.exit(1);
 	}
 
-	private static String readProcessOutput(Process p) throws IOException {
-		StringBuilder output = new StringBuilder();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-
-		String line = "";
-		while ((line = reader.readLine()) != null) {
-			output.append(line + "\n");
-		}
-
-		return output.toString();
-	}
-
 	private static List<String> storeProcessOutput(Process p) throws IOException {
 		List<String> strings = new ArrayList<>();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -152,4 +137,28 @@ public class Main {
 
 		return output.toString();
 	}
+	
+	private static void printBanner() {
+		System.out.println("                    _           _     _");
+		System.out.println("    /\\             | |         (_)   | |");
+		System.out.println("   /  \\   _ __   __| |_ __ ___  _  __| | ");
+		System.out.println("  / /\\ \\ | '_ \\ / _` | '__/ _ \\| |/ _` |");
+		System.out.println(" / ____ \\| | | | (_| | | | (_) | | (_| |   ");
+		System.out.println("/_/    \\_\\_| |_|\\__,_|_|  \\___/|_|\\__,_|   ");
+		System.out.println();
+		System.out.println(" ______      _                   _    _");
+		System.out.println("|  ____|    | |                 | |  | |");
+		System.out.println("| |__  __  _| |_ _ __ __ _ _ __ | | _| |_ ___  _ __");
+		System.out.println("|  __| \\ \\/ / __| '__/ _` | '_ \\| |/ / __/ _ \\| '__|");
+		System.out.println("| |____ >  <| |_| | | (_| | |_) |   <| || (_) | |");
+		System.out.println("|______/_/\\_\\\\__|_|  \\__,_| .__/|_|\\_\\\\__\\___/|_|");
+		System.out.println("                          | |");
+		System.out.println("                          |_|");
+		System.out.println();
+	}
 }
+
+/*
+
+
+*/
