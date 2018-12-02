@@ -10,6 +10,7 @@ import java.util.List;
 public class Main {
 	private static final String name = "Android Extrapktor";
 	private static String command_pullfile = " pull data/app/";
+	private static String command_pushfile = " install ";
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 		String finalPath = "";
@@ -37,7 +38,7 @@ public class Main {
 			if (input.equals("1")) {
 				backUpApks(finalPath, adb);
 			} else if (input.equals("2")) {
-				System.out.println("Option not yet implemented!");
+				installApks(finalPath, adb);
 			} else {
 				finishProcessShamelessly("You think I'm fucking joking m8? Choose an option next time.");
 			}
@@ -104,6 +105,55 @@ public class Main {
 			finishProcessShamelessly("You think I'm fucking joking m8? Choose an option next time.");
 		}
 	}
+	
+	private static void installApks(String finalPath, String adb) throws IOException, InterruptedException {
+		System.out.println("I'm trying to connect to the phone...");
+		System.out.println("");
+		Process p = Runtime.getRuntime().exec(adb + " shell su -c 'ls data/app'");
+		p.waitFor();
+		String error = readProcessError(p);
+		if (error != null && !error.isEmpty()) {
+			finishProcessShamelessly(error + "It wasn't my fault, adb fucked up :(");
+		}
+		File directory = new File(finalPath);
+		if (directory.exists() && directory.isDirectory()) {
+			File[] files = directory.listFiles();
+			System.out.println("Let's see.. There are " + files.length + " APK files on this folder.");
+			System.out.println("It's probably gonna take a while.");
+			System.out.println("Do you want me to install all the files?");
+			System.out.println("\nType [Y] to start, [N] to cancel process, and press enter.");
+			String input = System.console().readLine();
+			if (input.length() == 1) {
+				if (input.equalsIgnoreCase("y")) {
+					for (int i = 0; i < files.length; i++) {
+						String adbcommand = adb + command_pushfile + files[i];
+						p = Runtime.getRuntime().exec(adbcommand);
+						InputStreamReader is = new InputStreamReader(p.getInputStream());
+						BufferedReader reader = new BufferedReader(is);
+						String line = "";
+						while ((line = reader.readLine()) != null) {
+							System.out.println(line + " - processing (" + (i + 1) + "/"
+									+ files.length + 1 + ")");
+						}
+						p.waitFor();
+						error = readProcessError(p);
+						if (error != null && !error.isEmpty()) {
+							finishProcessShamelessly("I fucked up.\n" + error);
+						}
+					}
+					System.out.println("Wow, that was like " + files.length + " files. All of them installed!");
+					finishProcessShamelessly("No error at all!");
+				} else {
+					finishProcessShamelessly("Canceling process...");
+				}
+			} else {
+				finishProcessShamelessly("Canceling process...");
+			}
+		} else {
+			finishProcessShamelessly("The goddamn folder either doesn't exist or isn't a folder, like, at all :/");
+		}
+		
+	}
 
 	private static void finishProcessShamelessly(String error) {
 		System.out.println(error);
@@ -157,8 +207,3 @@ public class Main {
 		System.out.println();
 	}
 }
-
-/*
-
-
-*/
